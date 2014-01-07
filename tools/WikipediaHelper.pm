@@ -1,5 +1,6 @@
 package WikipediaHelper;
 use LWP::UserAgent;
+#use Encode;
 
 sub new
 {
@@ -15,6 +16,7 @@ sub new
 	my $self = bless {
 		site => $site,
 		ua => $ua,
+		debug => $ENV{DEBUG},
 	}, $class;
 	return $self;
 }
@@ -22,6 +24,7 @@ sub new
 sub debug
 {
 	my $self = shift;
+	return unless $self->{debug};
 	if(@_ > 1) {
 		printf(@_);
 	} else {
@@ -33,11 +36,16 @@ sub export_article
 {
 	my $self = shift;
 	my(@pages) = @_;
+#	foreach(@pages) {
+#		$_ = Encode::encode_utf8($_);
+##		$_ =~ s#([^a-zA-Z0-9_-])#sprintf("%%%02X", ord($1))#sge;
+#	}
 	my $uri = 'http://'.$self->{site}.'.wikipedia.org/w/index.php?title=Special:Export';
 #	$self->debug("GET URI: $uri");
 #	$self->{ua}->get($uri);
 	$uri .= '&action=submit';
 #	$self->debug("POST URI: $uri");
+	$self->debug("Pages: ".join("\n", @pages));
 	my $resp = $self->{ua}->post($uri, {
 		catname => '',
 		pages => join("\n", @pages),
