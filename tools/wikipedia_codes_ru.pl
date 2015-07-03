@@ -2,7 +2,7 @@
 #
 # (c) vir
 #
-# Last modified: 2014-01-07 09:09:25 +0400
+# Last modified: 2015-07-03 17:29:44 +0300
 #
 
 use utf8;
@@ -29,16 +29,16 @@ foreach(split /\n/s, $t) {
 
 	$cname = '' if /^\s*\*\s+/;
 
-	if(/^===.*Зона\s+(\d+)\s+—\s+([\w\s,-]+)/)
+	if(/^===.*Зона\s+(\d+)/)
 	{
 #		print "@@ z $1 = $_\n";
 		$znum = $1;
-		$zname = strip_format($2);
+#		$zname = strip_format($2);
 		$cname = '';
-		add_code('+'.$znum, '', $zname);
+#		add_code('+'.$znum, '', $zname);
 	} elsif(/^\s*\*\s*\[\[([^\|\]]+)\]\]/) {
 		$cname = $1;
-	} elsif(/^\s*\*\*+\s*\[\[(?:([^\|\]]+)\|)?([^\]]+)\]\].*?—\s+(.*?)(?:\s+\(.*?\)\s*)?$/) { # for USA
+	} elsif(/^\s*\*\*+\s*\[\[(?:([^\|\]]+)\|)?([^\]]+)\]\].*?—\s+(.*?)(?:\s+\(.*?\)\s*)?$/) { # for USA: ** [[Айдахо]] (Idaho) — 208
 		my $wp = $1 || $2;
 		my $n = strip_format($2);
 		foreach my $c(split /,\s*/, strip_spaces($3)) {
